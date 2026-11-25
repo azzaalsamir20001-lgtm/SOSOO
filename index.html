@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Seven world - Pro Max 🚀</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+    --bg:#09111a;
+    --bg-grad:radial-gradient(circle at 12% 8%, rgba(16, 185, 129, 0.11) 0%, transparent 42%), radial-gradient(circle at 88% 92%, rgba(56, 189, 248, 0.07) 0%, transparent 45%);
+    --card-bg:#101c28;
+    --surface-soft:#152433;
+    --surface-elevated:#1b2e40;
+    --text:#f8fafc;
+    --text-muted:#94a3b8;
+    --primary:#10b981;
+    --primary-bright:#34d399;
+    --primary-soft:rgba(16, 185, 129, 0.14);
+    --secondary:#38bdf8;
+    --gold:#fbbf24;
+    --gold-soft:rgba(251, 191, 36, 0.14);
+    --border:rgba(148, 163, 184, 0.14);
+    --shadow:0 10px 28px rgba(0, 0, 0, 0.28);
+    --shadow-sm:0 3px 10px rgba(0, 0, 0, 0.20);
+    --danger:#f87171;
+    --success:#34d399;
+    --warning:#fbbf24;
+    --purple:#38bdf8;
+    --whatsapp:#22c55e;
+    --email:#f87171;
+    --excel-green:#22c55e;
+    --pdf-red:#f87171;
+    --nav-bg:rgba(16, 28, 40, 0.96);
+    --splash-bg:#071018;
+    --chart-ring:#1e293b;
+    --chart-center-bg:#101c28;
+    --logo-badge-bg:#ffffff;
+    --logo-word-color:#070a24;
+}
+body.light-mode{
+    --bg:#f4f7fa;
+    --bg-grad:radial-gradient(circle at 12% 8%, rgba(13, 148, 136, 0.06) 0%, transparent 42%), radial-gradient(circle at 88% 92%, rgba(2, 132, 199, 0.05) 0%, transparent 45%);
+    --card-bg:#ffffff;
+    --surface-soft:#f8fafc;
+    --surface-elevated:#eef2f6;
+    --text:#0f172a;
+    --text-muted:#64748b;
+    --primary:#0d9488;
+    --primary-bright:#0f766e;
+    --primary-soft:rgba(13, 148, 136, 0.10);
+    --secondary:#0284c7;
+    --gold:#d97706;
+    --gold-soft:rgba(217, 119, 6, 0.10);
+    --border:#e2e8f0;
+    --shadow:0 6px 20px rgba(15, 23, 42, 0.05);
+    --shadow-sm:0 2px 8px rgba(15, 23, 42, 0.03);
+    --danger:#dc2626;
+    --success:#059669;
+    --warning:#d97706;
+    --purple:#0284c7;
+    --whatsapp:#16a34a;
+    --email:#dc2626;
+    --excel-green:#15803d;
+    --pdf-red:#b91c1c;
+    --nav-bg:rgba(255, 255, 255, 0.96);
+    --splash-bg:#ffffff;
+    --chart-ring:#e2e8f0;
+    --chart-center-bg:#ffffff;
+    --logo-badge-bg:#ffffff;
+    --logo-word-color:#070a24;
+}
+
+*{box-sizing:border-box; font-family:'Cairo', sans-serif; transition:background-color .22s, color .22s, border-color .22s, transform .14s; -webkit-tap-highlight-color: transparent;}
+body{background:var(--bg);color:var(--text);margin:0;padding:0 0 96px;background-image:var(--bg-grad);background-attachment:fixed;min-height:100vh;}
+
+#splashScreen{position:fixed;inset:0;background:var(--splash-bg);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.75s ease-out, visibility 0.75s}
+#splashScreen.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splash-logo{width:260px;height:205px;border-radius:26px;background:var(--logo-badge-bg);padding:10px 14px;display:flex;align-items:center;justify-content:center;animation:pulse 2.2s infinite;box-shadow:0 14px 36px rgba(124,58,237,0.16);border:1px solid rgba(124,58,237,0.14);transform:scale(1.07);}
+.splash-logo svg{width:100%;height:100%;display:block;transform:scale(1.06);}
+.splash-text{font-size:25px;font-weight:900;margin-top:16px;letter-spacing:0.6px;background:linear-gradient(90deg, #7c3aed, var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.splash-by{font-size:13px;font-weight:800;color:var(--gold);margin-top:4px;letter-spacing:0.4px;}
+@keyframes pulse{0%,100%{transform:scale(1.04)}50%{transform:scale(1.10)}}
+
+.container{padding:14px 14px 18px;max-width:480px;margin:auto}
+
+.header{background:var(--card-bg);border:1px solid var(--border);border-radius:22px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:var(--shadow);position:relative;}
+.header-brand{display:flex;align-items:center;gap:11px;text-align:right;flex:1;min-width:0;}
+body[dir="ltr"] .header-brand{text-align:left;}
+.header-logo-badge{height:56px;padding:4px 11px;border-radius:15px;background:var(--logo-badge-bg);border:1.5px solid rgba(124,58,237,0.22);flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 14px rgba(109,40,217,0.14);}
+.header-logo-badge svg{height:46px;width:auto;display:block;transform:scale(1.09);}
+.header-titles{display:flex;flex-direction:column;min-width:0;}
+.header h1{font-size:16.5px;font-weight:900;margin:0;color:var(--text);line-height:1.15;letter-spacing:0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.header-by{font-size:11.5px;color:var(--gold);margin-top:2px;font-weight:900;letter-spacing:0.3px;direction:ltr;text-align:right;}
+body[dir="ltr"] .header-by{text-align:left;}
+.header-actions{display:flex;gap:7px;flex-shrink:0;}
+.header-btn{background:var(--surface-soft);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:12px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);}
+.header-btn:active{transform:scale(0.94);}
+
+.card, .chart-box, .customer-card, .contract-card, .report-box, .archive-folder, .archive-item, .email-composer, .task-card {
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+    border-radius:18px;
+}
+.card{padding:15px;margin-bottom:12px;}
+.card h3{margin:0 0 11px;font-size:14px;font-weight:900;color:var(--primary);display:flex;justify-content:space-between;align-items:center;gap:8px;}
+
+input,select,textarea{background:var(--surface-soft);border:1.5px solid var(--border);color:var(--text);padding:10px 12px;border-radius:12px;width:100%;font-size:13px;margin-bottom:9px;font-weight:700;font-family:'Cairo',sans-serif;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);background:var(--card-bg);box-shadow:0 0 0 3px var(--primary-soft)}
+label{font-size:11px;color:var(--text-muted);display:block;margin-bottom:4px;font-weight:800}
+
+.btn{background:linear-gradient(135deg, var(--primary), #0d9488);color:#fff;border:none;padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:800;font-size:13px;width:100%;margin-bottom:8px;display:flex;justify-content:center;align-items:center;gap:6px;text-align:center;box-shadow:0 4px 12px rgba(15,118,110,0.22);font-family:'Cairo',sans-serif;}
+.btn:active{transform:scale(0.98)}
+.btn-wa{background:linear-gradient(135deg, #16a34a, #15803d);box-shadow:0 4px 12px rgba(22,163,74,0.22)}
+.btn-email{background:linear-gradient(135deg, #0284c7, #0369a1);box-shadow:0 4px 12px rgba(2,132,199,0.20)}
+.btn-excel{background:linear-gradient(135deg, #15803d, #166534);box-shadow:0 4px 12px rgba(21,128,61,0.22)}
+.btn-pdf{background:linear-gradient(135deg, #dc2626, #991b1b);box-shadow:0 4px 12px rgba(220,38,38,0.20)}
+.btn-note{background:var(--surface-elevated);color:var(--text);border:1px solid var(--border);box-shadow:none}
+.btn-gray{background:var(--surface-elevated);color:var(--text);border:1px solid var(--border);box-shadow:none}
+.btn-sm{padding:8px 10px;font-size:11px;width:auto}
+.btn-danger{background:linear-gradient(135deg, #dc2626, #b91c1c);box-shadow:0 4px 12px rgba(220,38,38,0.20)}
+.btn-save{background:linear-gradient(135deg, #0284c7, #0369a1);box-shadow:0 4px 12px rgba(2,132,199,0.18)}
+.btn-purple{background:linear-gradient(135deg, #0f766e, #0284c7);box-shadow:0 4px 12px rgba(15,118,110,0.22)}
+.btn-warning{background:linear-gradient(135deg, #f59e0b, #d97706);color:#0f172a;box-shadow:0 4px 12px rgba(217,119,6,0.22)}
+
+.save-row{display:flex;gap:6px;margin-bottom:10px;margin-top:6px;flex-wrap:wrap;}
+.save-row .btn{padding:8px 6px;font-size:11px;margin-bottom:0;flex:1;min-width:30%;border-radius:11px;}
+.row{display:flex;gap:8px;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+
+.bottom-nav{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);width:calc(100% - 16px);max-width:472px;background:var(--nav-bg);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:18px;display:flex;justify-content:space-between;align-items:center;padding:5px 4px;z-index:1000;overflow-x:auto;scrollbar-width:none;box-shadow:0 10px 28px rgba(0,0,0,0.22);}
+body.light-mode .bottom-nav{box-shadow:0 8px 24px rgba(15,23,42,0.08);}
+.bottom-nav::-webkit-scrollbar{display:none;}
+.nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-muted);cursor:pointer;flex:1;min-width:42px;position:relative;padding:5px 2px;border-radius:12px;}
+.nav-item .nav-icon{font-size:13.5px;margin-bottom:1px;transition:transform 0.2s, filter 0.2s;filter:grayscale(0.75);opacity:0.82;line-height:1.1;}
+.nav-item .nav-text{font-size:8.5px;font-weight:800;white-space:nowrap;text-align:center;line-height:1.2;}
+.nav-item.active{color:var(--primary);background:var(--primary-soft);}
+.nav-item.active .nav-icon{transform:translateY(-1px) scale(1.06);filter:grayscale(0);opacity:1;}
+.nav-badge{position:absolute;top:1px;right:4px;background:var(--danger);color:#fff;font-size:8px;padding:1px 4px;border-radius:10px;font-weight:800;min-width:13px;text-align:center;}
+
+.tab-content{display:none;animation:fadeIn .28s ease-out}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.welcome-sec { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 12px 14px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow-sm); }
+.welcome-text h2 { margin: 0; font-size: 16px; font-weight: 900; color: var(--text); }
+.welcome-text p { margin: 2px 0 0; font-size: 11px; color: var(--text-muted); font-weight: 700; }
+.welcome-avatar { width: 42px; height: 42px; border-radius: 14px; background: linear-gradient(135deg, var(--primary), #0f172a); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 19px; box-shadow: 0 6px 14px rgba(15,118,110,0.22); flex-shrink: 0; }
+
+.target-input-wrapper { background: var(--surface-soft); padding: 13px 12px; border-radius: 15px; border: 1px dashed rgba(16, 185, 129, 0.35); text-align: center; }
+.target-input-wrapper label { color: var(--primary); font-weight: 900; margin-bottom: 6px; display: block; font-size: 12px; }
+.target-input-wrapper input { background: var(--card-bg); border: 1.5px solid var(--border); border-bottom: 2.5px solid var(--primary); border-radius: 12px; font-size: 21px; color: var(--primary); text-align: center; margin-bottom: 0; padding: 6px 10px; width: 70%; margin-left: auto; margin-right: auto; display: block; font-weight: 900; }
+.target-input-wrapper input:focus { box-shadow: 0 0 0 3px var(--primary-soft); border-bottom-color: var(--gold); }
+
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:4px}
+.dash-stat{padding:12px 10px;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;background:var(--surface-soft);border-radius:15px;border:1px solid var(--border);position:relative;overflow:hidden;box-shadow:var(--shadow-sm);}
+.dash-stat .icon-bg { position: absolute; right: -6px; bottom: -8px; font-size: 34px; opacity: 0.08; pointer-events: none; }
+.dash-stat .num{font-size:18px;font-weight:900;margin:4px 0 1px;}
+.dash-stat .lbl{font-size:10px;color:var(--text-muted);font-weight:800;}
+
+.chart-box{padding:14px;margin-bottom:12px;position:relative;}
+.chart-box h4{margin:0 0 10px;font-size:13px;color:var(--text);font-weight:900;display:flex;align-items:center;gap:6px;}
+
+#chartCenterText { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; pointer-events: none; background: var(--chart-center-bg); width: 122px; height: 122px; border-radius: 50%; box-shadow: var(--shadow-sm); border: 2px solid var(--border); }
+
+.crm-toolbar-sticky { position: sticky; top: 8px; background: var(--bg); z-index: 100; padding: 4px 0 8px; margin-bottom: 4px; }
+#crmSearch { background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 16px; padding: 10px 14px; box-shadow: var(--shadow-sm); margin-bottom: 0; font-size: 12px; }
+
+.customer-card{padding:14px;margin-bottom:10px;position:relative;overflow:hidden;}
+.customer-card::before{content:'';position:absolute;top:0;right:0;bottom:0;width:4px;background:var(--secondary)}
+body[dir="ltr"] .customer-card::before{left:0;right:auto;}
+.status-waiting::before{background:var(--warning)}.status-activated::before{background:var(--success)}.status-rejected::before{background:var(--danger)}.status-no-answer::before{background:#ea580c}.status-not-interested::before{background:#64748b}
+
+.crm-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;gap:8px;}
+.crm-name{font-size:14px;font-weight:900;color:var(--text);margin-bottom:5px}
+.crm-phone-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.crm-phone{font-size:12px;color:var(--text-muted);font-family:monospace;direction:ltr;font-weight:800;background:var(--surface-soft);padding:3px 8px;border-radius:8px;border:1px solid var(--border);}
+.quick-action{display:inline-flex;justify-content:center;align-items:center;width:30px;height:30px;border-radius:10px;text-decoration:none;font-size:13px;color:#fff;border:1px solid var(--border);cursor:pointer;box-shadow:var(--shadow-sm);}
+.quick-action:active{transform:scale(0.94)}
+.quick-call{background:#0284c7;color:#fff;}
+.quick-wa{background:var(--whatsapp);color:#fff;}
+.quick-gps{background:var(--gold-soft);color:var(--gold);border-color:rgba(217,119,6,0.25);}
+.quick-save{background:var(--primary-soft);color:var(--primary);border-color:rgba(15,118,110,0.25);}
+
+.crm-amount{color:var(--success);font-weight:900;font-size:14px;margin:7px 0}
+.crm-notes{background:var(--surface-soft);padding:8px 10px;border-radius:10px;font-size:11px;color:var(--text-muted);margin-bottom:8px;font-weight:700;border:1px solid var(--border);}
+.crm-actions{display:grid;grid-template-columns:repeat(3, 1fr);gap:6px}
+.action-status-btn{padding:7px 6px;border-radius:10px;font-size:10px;text-align:center;border:1px solid var(--border);background:var(--surface-soft);color:var(--text-muted);cursor:pointer;font-weight:800;display:flex;justify-content:center;align-items:center;gap:4px}
+.action-status-btn.active{font-weight:900;color:#fff;box-shadow:var(--shadow-sm)}
+.action-status-btn.active-waiting{background:var(--warning);border-color:var(--warning);color:#0f172a}
+.action-status-btn.active-activated{background:var(--success);border-color:var(--success)}
+.action-status-btn.active-rejected{background:var(--danger);border-color:var(--danger)}
+.action-status-btn.active-no-answer{background:#ea580c;border-color:#ea580c}
+.action-status-btn.active-not-interested{background:#475569;border-color:#475569}
+
+.crm-stats{display:flex;justify-content:space-between;gap:10px;padding:12px;border-radius:16px;margin-bottom:12px;text-align:center;background:var(--card-bg);border:1px solid var(--border);box-shadow:var(--shadow-sm);}
+.crm-stats div{font-size:11px;color:var(--text-muted);font-weight:800;flex:1;background:var(--surface-soft);padding:10px 8px;border-radius:12px;}
+.crm-stats span{display:block;font-size:16px;font-weight:900;color:var(--primary);margin-top:4px}
+
+.streak-box{background:linear-gradient(135deg, #0f172a, #0f766e);color:#fff;padding:15px;border-radius:18px;text-align:center;margin-bottom:12px;box-shadow:var(--shadow);border:1px solid rgba(251,191,36,0.25);}
+body.light-mode .streak-box{background:linear-gradient(135deg, #0d9488, #0284c7);border:none;}
+.streak-box .big{font-size:30px;font-weight:900;margin:4px 0;color:#fbbf24;}
+.badges-row{display:flex;gap:8px;overflow-x:auto;padding:4px 0;scrollbar-width:none}
+.badges-row::-webkit-scrollbar{display:none}
+.badge-item{flex-shrink:0;text-align:center;font-size:10px;color:var(--text-muted);min-width:68px;font-weight:800;background:var(--surface-soft);padding:9px 6px;border-radius:14px;border:1px solid var(--border)}
+.badge-item .icon{font-size:22px;display:block;filter:grayscale(1);opacity:.35;margin-bottom:4px;}
+.badge-item.unlocked .icon{filter:none;opacity:1;transform:scale(1.06);}
+.badge-item.unlocked{color:var(--primary);background:var(--primary-soft);border-color:rgba(15,118,110,0.35)}
+
+.projection-box{background:linear-gradient(135deg, #0f172a, #1e293b);color:#fff;padding:15px;border-radius:18px;margin-bottom:12px;box-shadow:var(--shadow);border-right:4px solid var(--gold);}
+body.light-mode .projection-box{background:var(--card-bg);color:var(--text);border:1px solid var(--border);border-right:4px solid var(--gold);}
+body[dir="ltr"] .projection-box{border-right:none;border-left:4px solid var(--gold);}
+.projection-box h4{margin:0 0 9px;font-size:13px;font-weight:900;color:var(--gold);}
+.projection-box .line{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;padding:5px 0;border-bottom:1px dashed var(--border);font-weight:800}
+.projection-box .line:last-child{border-bottom:none;margin-bottom:0}
+
+.quick-fab{position:fixed;bottom:80px;left:14px;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg, var(--primary), #0284c7);border:1px solid rgba(255,255,255,0.2);color:#fbbf24;font-size:18px;z-index:998;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.24);display:flex;align-items:center;justify-content:center;}
+body[dir="ltr"] .quick-fab{left:auto;right:14px;}
+.quick-fab:active{transform:scale(0.94)}
+
+.translate-fab{position:fixed;bottom:80px;left:64px;width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg, #0284c7, #0d9488);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:17px;z-index:998;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.24);display:flex;align-items:center;justify-content:center;}
+body[dir="ltr"] .translate-fab{left:auto;right:64px;}
+.translate-fab:active{transform:scale(0.94)}
+
+.selection-translate-btn{position:fixed;z-index:9995;background:linear-gradient(135deg, #0284c7, var(--primary));color:#fff;border:1px solid rgba(255,255,255,0.22);border-radius:12px;padding:6px 11px;font-size:11px;font-weight:900;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,0.28);display:none;align-items:center;gap:5px;}
+
+.translator-modal-backdrop{position:fixed;inset:0;background:rgba(9,17,26,0.62);backdrop-filter:blur(5px);z-index:9990;display:none;align-items:center;justify-content:center;padding:14px;}
+.translator-modal-backdrop.open{display:flex;}
+.translator-modal{width:100%;max-width:460px;background:var(--card-bg);border:1px solid var(--border);border-radius:20px;padding:15px;box-shadow:var(--shadow);max-height:88vh;overflow-y:auto;}
+.translator-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.translator-header h3{margin:0;font-size:14px;font-weight:900;color:var(--primary);}
+.translator-close{background:var(--surface-soft);border:1px solid var(--border);color:var(--text);width:32px;height:32px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:900;}
+.translator-out{background:var(--surface-soft);border:1.5px solid var(--border);border-radius:12px;padding:11px;min-height:95px;font-size:12.5px;font-weight:800;color:var(--text);white-space:pre-wrap;margin-bottom:9px;line-height:1.65;}
+.translator-smart-note{background:var(--primary-soft);border:1px solid rgba(15,118,110,0.25);border-radius:11px;padding:8px 10px;font-size:11px;font-weight:800;color:var(--primary);margin-bottom:10px;}
+.history-chip{background:var(--surface-soft);border:1px solid var(--border);border-radius:12px;padding:9px 11px;margin-bottom:7px;cursor:pointer;}
+.history-chip:hover{border-color:var(--primary);}
+
+.quick-menu{position:fixed;bottom:132px;left:14px;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:6px;z-index:997;display:flex;flex-direction:column;gap:4px;box-shadow:var(--shadow);animation:fadeIn .18s}
+body[dir="ltr"] .quick-menu{left:auto;right:14px;}
+.quick-menu.hidden{display:none}
+.quick-menu button{background:transparent;border:none;padding:9px 12px;border-radius:11px;color:var(--text);text-align:right;font-size:11px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px}
+body[dir="ltr"] .quick-menu button{text-align:left;}
+.quick-menu button:hover{background:var(--surface-soft)}
+
+#toast{position:fixed;bottom:134px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:10px 18px;border-radius:14px;font-size:12px;font-weight:800;z-index:9999;opacity:0;transition:all .25s ease;pointer-events:none;box-shadow:var(--shadow);max-width:90%;text-align:center;border:1px solid rgba(255,255,255,0.12)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.success{background:var(--success);color:#0f172a;border:none}#toast.error{background:var(--danger);color:#fff;border:none}#toast.info{background:#0f172a;color:#fbbf24;border:1px solid rgba(251,191,36,0.3)}
+
+.report-box{padding:13px;margin-bottom:10px;font-size:12px}
+.report-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed var(--border)}
+.report-info{display:flex;flex-direction:column;gap:2px}
+.report-name{font-weight:900;color:var(--text)}
+.report-detail{font-size:11px;color:var(--text-muted);font-weight:700}
+.report-divider{border-top:1px solid var(--border);margin:9px 0}
+.report-section-title{font-weight:900;color:var(--primary);margin-bottom:4px}
+.report-summary-line{font-weight:700;margin-bottom:3px;color:var(--text)}
+.settings-area{display:none;background:var(--card-bg);padding:13px;border-radius:16px;border:1px solid var(--border);margin-bottom:10px;box-shadow:var(--shadow-sm);}
+.settings-area h4{margin:0 0 8px;font-size:12px;color:var(--gold);font-weight:900;}
+.stat-title{color:var(--text-muted);font-weight:800}
+.stat-value{font-weight:900;color:var(--text);margin-top:2px}
+.stat-value.highlight{color:var(--primary)}
+
+.email-composer{padding:12px;margin-bottom:10px;background:var(--surface-soft);}
+.email-composer-header{font-weight:900;color:var(--primary);margin-bottom:8px;font-size:13px}
+.email-composer-field{margin-bottom:8px;padding-bottom:6px;border-bottom:1px dashed var(--border);font-size:11px}
+
+.archive-folder{padding:13px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-right:4px solid var(--primary)}
+body[dir="ltr"] .archive-folder{border-right:1px solid var(--border);border-left:4px solid var(--primary);}
+
+.report-card { background: var(--card-bg); border-radius:16px; margin-bottom:10px; box-shadow: var(--shadow-sm); overflow: hidden; border: 1px solid var(--border);}
+.report-card-header { background: var(--surface-soft); padding:10px 13px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--primary); color: var(--primary); font-weight: 900; font-size:12px;}
+.report-card-body { padding: 6px 13px; }
+.report-card-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--border); font-size: 11px; color: var(--text); font-weight: 700;}
+.report-card-item:last-child { border-bottom: none; }
+.report-card-item .name { color: var(--text); font-weight: 900;}
+.report-card-item .details { color: var(--text-muted); font-size: 10px; }
+.report-card-footer { background: var(--surface-soft); padding:8px 13px; display:flex; justify-content:space-between; border-top:1px solid var(--border);}
+
+.table-container{overflow-x:auto;border-radius:14px;border:1px solid var(--border);margin-top:10px;direction:ltr;background:var(--surface-soft)}
+.data-table{width:100%;border-collapse:collapse;text-align:center;color:var(--text);direction:ltr;font-size:11px}
+.data-table th{background:var(--surface-elevated);color:var(--text);padding:9px 8px;font-weight:900;border-bottom:1px solid var(--border)}
+.data-table td{border-bottom:1px solid var(--border);padding:8px;font-weight:700;color:var(--text)}
+.data-table .total-row td{background:var(--primary-soft);color:var(--primary);font-weight:900;border-top:1.5px solid var(--border)}
+
+.calc-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; }
+.calc-line span:first-child { font-size: 12px; color: var(--text-muted); font-weight: 800; }
+.calc-line span:last-child { font-size: 14px; font-weight: 900; }
+
+.task-card{padding:11px 13px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface-soft);}
+.task-card.done{opacity:0.65;}
+.task-card.done .task-title{text-decoration:line-through;color:var(--text-muted);}
+.off-summary-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.off-chip{background:var(--surface-soft);border:1px solid var(--border);padding:4px 8px;border-radius:10px;font-size:10px;font-weight:800;color:var(--text-muted);}
+</style>
+</head>
+<body>
+
+<div id="splashScreen">
+    <div class="splash-logo">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" aria-label="Seven logo">
+            <defs>
+                <linearGradient id="spMainGrad" x1="15%" y1="0%" x2="85%" y2="100%">
+                    <stop offset="0%" stop-color="#f5edff" stop-opacity="0.18"/>
+                    <stop offset="22%" stop-color="#c084fc"/>
+                    <stop offset="52%" stop-color="#7c3aed"/>
+                    <stop offset="82%" stop-color="#8b5cf6"/>
+                    <stop offset="100%" stop-color="#e9d5ff" stop-opacity="0.35"/>
+                </linearGradient>
+                <linearGradient id="spFacetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#6d28d9" stop-opacity="0.65"/>
+                    <stop offset="100%" stop-color="#a855f7" stop-opacity="0.30"/>
+                </linearGradient>
+                <linearGradient id="spTopFade" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.88"/>
+                    <stop offset="35%" stop-color="#ffffff" stop-opacity="0.12"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="spBotFade" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+                    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.72"/>
+                </linearGradient>
+            </defs>
+            <polygon points="104,14 252,14 148,186 112,186 204,42 104,42" fill="url(#spMainGrad)"/>
+            <polygon points="104,14 176,14 146,62 104,62" fill="url(#spFacetGrad)"/>
+            <polygon points="104,14 156,14 134,46 104,46" fill="url(#spTopFade)"/>
+            <polygon points="106,154 156,154 148,186 112,186" fill="url(#spBotFade)"/>
+            <text x="142" y="122" text-anchor="middle" fill="#070a24" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="68" letter-spacing="-2">seven</text>
+        </svg>
+    </div>
+    <div class="splash-text">Seven world</div>
+    <div class="splash-by">By M.wageh</div>
+</div>
+
+<div class="container">
+<div class="header">
+    <div class="header-brand">
+        <div class="header-logo-badge" aria-hidden="true">
+            <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="hdMainGrad" x1="15%" y1="0%" x2="85%" y2="100%">
+                        <stop offset="0%" stop-color="#f5edff" stop-opacity="0.18"/>
+                        <stop offset="22%" stop-color="#c084fc"/>
+                        <stop offset="52%" stop-color="#7c3aed"/>
+                        <stop offset="82%" stop-color="#8b5cf6"/>
+                        <stop offset="100%" stop-color="#e9d5ff" stop-opacity="0.35"/>
+                    </linearGradient>
+                    <linearGradient id="hdFacetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#6d28d9" stop-opacity="0.65"/>
+                        <stop offset="100%" stop-color="#a855f7" stop-opacity="0.30"/>
+                    </linearGradient>
+                    <linearGradient id="hdTopFade" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.88"/>
+                        <stop offset="35%" stop-color="#ffffff" stop-opacity="0.12"/>
+                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="hdBotFade" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.72"/>
+                    </linearGradient>
+                </defs>
+                <polygon points="104,14 252,14 148,186 112,186 204,42 104,42" fill="url(#hdMainGrad)"/>
+                <polygon points="104,14 176,14 146,62 104,62" fill="url(#hdFacetGrad)"/>
+                <polygon points="104,14 156,14 134,46 104,46" fill="url(#hdTopFade)"/>
+                <polygon points="106,154 156,154 148,186 112,186" fill="url(#hdBotFade)"/>
+                <text x="142" y="122" text-anchor="middle" fill="#070a24" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="68" letter-spacing="-2">seven</text>
+            </svg>
+        </div>
+        <div class="header-titles">
+            <h1>Seven world</h1>
+            <span class="header-by">By M.wageh</span>
+        </div>
+    </div>
+    <div class="header-actions">
+        <button class="header-btn" onclick="toggleLanguage()" title="Language">🔤</button>
+        <button class="header-btn" id="themeBtn" onclick="toggleTheme()" title="Theme">☀️</button>
+    </div>
+</div>
+
+<!-- Dashboard Tab -->
+<div id="tab-dashboard" class="tab-content active">
+    <div class="welcome-sec">
+        <div class="welcome-text">
+            <h2 id="welcomeHeading">أهلاً يا <span style="color:var(--primary)">Mohamed</span> 👋</h2>
+            <p data-i18n="welcome_sub">إلى أين سنصل اليوم؟</p>
+        </div>
+        <div class="welcome-avatar">🚀</div>
+    </div>
+
+    <div class="card">
+        <div class="target-input-wrapper">
+            <label data-i18n="dash_target_label">🎯 حدد التارجت الشهري هنا:</label>
+            <input type="number" id="dashTargetInput" placeholder="..." oninput="saveDashTarget(this.value)">
+        </div>
+        
+        <div class="dash-grid" style="margin-top: 12px;">
+            <div class="dash-stat">
+                <span class="icon-bg">📝</span>
+                <div class="lbl" data-i18n="dash_contracts">عقود الشهر</div>
+                <div class="num" id="dashMonthContracts" style="color:var(--primary)">0</div>
+            </div>
+            <div class="dash-stat">
+                <span class="icon-bg">💰</span>
+                <div class="lbl" data-i18n="dash_limit">ليميت الشهر</div>
+                <div class="num" id="dashMonthLimits" style="color:var(--secondary)">0</div>
+            </div>
+            <div class="dash-stat">
+                <span class="icon-bg">📅</span>
+                <div class="lbl" data-i18n="dash_followups">متابعات</div>
+                <div class="num" id="dashFollowups" style="color:var(--gold)">0</div>
+            </div>
+            <div class="dash-stat">
+                <span class="icon-bg">👥</span>
+                <div class="lbl" data-i18n="dash_total_crm">إجمالي عملاء</div>
+                <div class="num" id="dashTotalCrm" style="color:var(--text)">0</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-box">
+        <h4 data-i18n="chart_target">🎯 التارجت الشهري</h4>
+        <div style="position:relative; width:100%; height:180px; display:flex; justify-content:center; align-items:center;">
+            <canvas id="chartTarget"></canvas>
+            <div id="chartCenterText"></div>
+        </div>
+    </div>
+    
+    <div class="chart-box"><h4 data-i18n="chart_status">📊 حالات العملاء</h4><canvas id="chartStatusPie"></canvas></div>
+    <div class="chart-box"><h4 data-i18n="chart_week">📈 آخر 7 أيام</h4><canvas id="chartWeek"></canvas></div>
+    
+    <div class="projection-box">
+        <h4 data-i18n="proj_title">🔮 توقع نهاية الشهر</h4>
+        <div class="line"><span data-i18n="proj_rate">معدلك اليومي:</span><span id="projRate">0</span></div>
+        <div class="line"><span data-i18n="proj_daily_needed">المطلوب يومياً لباقي الشهر:</span><span id="projDailyNeeded" style="color:var(--success);">0</span></div>
+        <div class="line"><span data-i18n="proj_end">التوقع النهائي:</span><span id="projEnd">0</span></div>
+        <div class="line"><span data-i18n="proj_compare">المقارنة بالشهر السابق:</span><span id="projCompare">—</span></div>
+    </div>
+    
+    <div class="streak-box">
+        <div style="font-size:12px;opacity:.9;font-weight:900" data-i18n="streak_title">🔥 Streak</div>
+        <div class="big" id="streakNum">0</div>
+        <div style="font-size:10px;font-weight:800" data-i18n="streak_desc">يوم متواصل بتحقيق</div>
+    </div>
+    <div class="card"><h3 data-i18n="badges_title">🏆 الإنجازات</h3><div class="badges-row" id="badgesRow"></div></div>
+</div>
+
+<!-- Calc Tab -->
+<div id="tab-calc" class="tab-content">
+    <div class="card">
+        <h3 data-i18n="calc_title">حاسبة العمولة 💰</h3>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:-4px;margin-bottom:10px;font-weight:700" data-i18n="calc_desc">اكتب الأرقام اللي إنت عايز تجربها في الخانات دي، وهيا هتحسب لوحدها.</p>
+        <div class="row" style="margin-bottom:8px;">
+            <div style="flex:1;">
+                <label style="text-align:center; font-weight:800" data-i18n="calc_target">التارجت</label>
+                <input type="number" id="calcTargetManual" placeholder="80" oninput="onCalcInputChange()" style="margin-bottom:0; text-align:center; font-weight:900; color:var(--primary); font-size:16px;">
+            </div>
+            <div style="flex:1;">
+                <label style="text-align:center; font-weight:800" data-i18n="calc_achieved">المنجز</label>
+                <input type="number" id="calcAchievedManual" placeholder="64" oninput="onCalcInputChange()" style="margin-bottom:0; text-align:center; font-weight:900; color:var(--success); font-size:16px;">
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+            <button class="btn btn-gray" onclick="syncCalcWithData()" style="flex:2; margin-bottom:0; padding:8px; font-size:11px;" data-i18n="calc_sync">🔄 سحب الأرقام الحقيقية تلقائياً</button>
+            <button class="btn btn-gray" onclick="resetCalcInputs()" style="flex:1; margin-bottom:0; padding:8px; font-size:11px;" data-i18n="btn_clear">🧹 تفريغ</button>
+        </div>
+        <label data-i18n="calc_limit">الليميت المحقق (جنيه) - اكتبه يدوي</label>
+        <input type="tel" inputmode="numeric" id="calcLimit" placeholder="1,350,000" oninput="formatNumberInput(this); onCalcInputChange()">
+        
+        <div class="calc-result" id="newCalcSaveArea">
+            <div class="calc-line">
+                <span data-i18n="calc_percent_title">نسبة التارجت:</span>
+                <span id="calcPercent" style="color:var(--secondary)">0%</span>
+            </div>
+            <div style="background:var(--surface-soft);padding:11px;border-radius:14px;margin-bottom:10px;border:1px solid var(--border);">
+                <div class="calc-line">
+                    <span data-i18n="calc_rate">سعر العقد:</span>
+                    <span id="calcRate" style="color:var(--gold)">0</span>
+                </div>
+                <div class="calc-line">
+                    <span data-i18n="calc_contracts_total">إجمالي العقود:</span>
+                    <span id="calcContractsTotal" style="color:var(--gold)">0</span>
+                </div>
+                <hr style="border:none;border-top:1px dashed var(--border);margin:8px 0">
+                <div class="calc-line">
+                    <span data-i18n="calc_bonus">البونص (1 مليون = 1600):</span>
+                    <span id="calcBonus" style="color:var(--primary)">0</span>
+                </div>
+                <div class="calc-line">
+                    <span data-i18n="calc_tax">الضريبة المخصومة (11%):</span>
+                    <span id="calcTaxAmount" style="color:var(--danger)">0</span>
+                </div>
+            </div>
+            <div class="calc-line" style="margin-top:10px;">
+                <span data-i18n="calc_subtotal">الإجمالي قبل الضريبة:</span>
+                <span id="calcSubtotal" style="color:var(--text)">0</span>
+            </div>
+            <div style="background:var(--primary-soft);padding:11px 12px;border-radius:14px;border:1px solid rgba(16,185,129,0.22);margin-top:8px;">
+                <h3 style="margin:0; display:flex; justify-content:space-between; align-items:center; color:var(--success); font-size:13px;">
+                    <span data-i18n="calc_total">الإجمالي بعد خصم الضريبة:</span>
+                    <span id="calcTotal" style="font-size:19px;font-weight:900;">0</span>
+                </h3>
+            </div>
+        </div>
+        
+        <div class="save-row">
+            <button class="btn btn-save" onclick="saveSection('newCalcSaveArea','حساب_العمولة','img')" data-i18n="save_img">📸 صورة</button>
+            <button class="btn btn-note" onclick="saveSection('newCalcSaveArea','حساب_العمولة','txt')" data-i18n="save_txt">📝 نوت</button>
+            <button class="btn btn-pdf" onclick="saveSection('newCalcSaveArea','حساب_العمولة','pdf')" data-i18n="save_pdf">📄 PDF</button>
+        </div>
+    </div>
+
+    <!-- Manual Target Calculator Card -->
+    <div class="card">
+        <h3 data-i18n="manual_target_title">احسب تارجتي مانول 🎯</h3>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:-4px;margin-bottom:10px;font-weight:700" data-i18n="manual_target_desc">حط التارجت بتاعك يدوي واللي عملته، وهيطلعلك النسبة المئوية بس.</p>
+        <div class="row" style="margin-bottom:8px;">
+            <div style="flex:1;">
+                <label style="text-align:center; font-weight:800" data-i18n="manual_target_in">تارجتي مانول</label>
+                <input type="number" id="manualTargetVal" placeholder="80" oninput="calcManualTargetOnly()" style="margin-bottom:0; text-align:center; font-weight:900; color:var(--primary); font-size:16px;">
+            </div>
+            <div style="flex:1;">
+                <label style="text-align:center; font-weight:800" data-i18n="manual_done_in">اللي عملته</label>
+                <input type="number" id="manualDoneVal" placeholder="54" oninput="calcManualTargetOnly()" style="margin-bottom:0; text-align:center; font-weight:900; color:var(--success); font-size:16px;">
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+            <button type="button" class="btn btn-gray" onclick="setQuickManualTarget(60)" style="flex:1;margin-bottom:0;padding:6px;font-size:11px;">60</button>
+            <button type="button" class="btn btn-gray" onclick="setQuickManualTarget(80)" style="flex:1;margin-bottom:0;padding:6px;font-size:11px;">80</button>
+            <button type="button" class="btn btn-gray" onclick="setQuickManualTarget(100)" style="flex:1;margin-bottom:0;padding:6px;font-size:11px;">100</button>
+            <button type="button" class="btn btn-gray" onclick="pullRealAchievedToManual()" style="flex:1.4;margin-bottom:0;padding:6px;font-size:11px;" data-i18n="manual_pull_btn">📥 منجزي الحالي</button>
+        </div>
+        <div style="background:var(--surface-soft);padding:14px;border-radius:14px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <span data-i18n="manual_pct_lbl" style="font-size:13px;color:var(--text-muted);font-weight:800;">نسبة التحقيق:</span>
+            <span id="manualTargetPct" style="color:var(--secondary);font-size:24px;font-weight:900;">0%</span>
+        </div>
+    </div>
+</div>
+
+<!-- CRM Tab -->
+<div id="tab-crm" class="tab-content">
+    <div class="crm-toolbar-sticky">
+        <input type="text" id="crmSearch" placeholder="🔍 ابحث بالاسم أو الكود أو الرقم..." data-i18n-placeholder="crm_search_ph" oninput="renderCrm()">
+    </div>
+    <div class="crm-toolbar" style="margin-top:-2px; margin-bottom:10px;">
+        <button class="btn btn-sm btn-wa" onclick="bulkWhatsApp()" style="width:100%;padding:9px;font-size:11px;margin-bottom:0;" data-i18n="crm_bulk">📲 إرسال واتساب جماعي</button>
+    </div>
+    <div id="crmSaveArea">
+        <div class="crm-stats"><div><span data-i18n="crm_active">مفعّلين</span><span id="totalActivatedCount">0</span></div><div><span data-i18n="crm_amount">إجمالي المبالغ</span><span id="totalActivatedAmount">0</span></div></div>
+        <div id="customerList"></div>
+    </div>
+    <div class="save-row">
+        <button class="btn btn-save" onclick="saveSection('crmSaveArea','قائمة_العملاء','img')" data-i18n="save_img">📸 صورة</button>
+        <button class="btn btn-note" onclick="saveSection('crmSaveArea','قائمة_العملاء','txt')" data-i18n="save_txt">📝 نوت</button>
+        <button class="btn btn-pdf" onclick="saveSection('crmSaveArea','قائمة_العملاء','pdf')" data-i18n="save_pdf">📄 PDF</button>
+    </div>
+    <div class="card">
+        <h3 data-i18n="crm_add_title">إضافة عميل جديد 👥</h3>
+        <input type="text" id="custNameCrm" placeholder="اسم العميل" data-i18n-placeholder="crm_name_ph">
+        <div class="row" style="margin-bottom:0;">
+            <input type="tel" id="custPhone" placeholder="رقم التليفون" data-i18n-placeholder="crm_phone_ph" style="flex:1;">
+            <input type="text" id="custCodeCrm" placeholder="كود العميل / الليد" data-i18n-placeholder="crm_code_ph" style="flex:1;">
+        </div>
+        <input type="number" id="custLoanAmount" placeholder="الليمت / مبلغ التمويل (مثال: 50000 أو 50)" data-i18n-placeholder="crm_amount_ph">
+        <label style="margin-top:-2px" data-i18n="crm_followup">تاريخ المتابعة (اختياري)</label>
+        <input type="date" id="custFollowup">
+        <label data-i18n="crm_tags">التاجات (اختياري)</label>
+        <select id="custTags" multiple style="min-height:60px"><option value="VIP" data-i18n="tag_vip">⭐ VIP</option><option value="Hot" data-i18n="tag_hot">🔥 Hot</option><option value="New" data-i18n="tag_new">🆕 New</option><option value="صعب" data-i18n="tag_hard">😤 صعب</option><option value="سهل" data-i18n="tag_easy">😊 سهل</option></select>
+        <textarea id="custNotes" placeholder="ملاحظات" data-i18n-placeholder="crm_notes_ph" rows="2"></textarea>
+        <button class="btn" onclick="addCustomerCrm()" data-i18n="crm_add_btn">+ إضافة عميل</button>
+    </div>
+</div>
+
+<!-- Daily Report Tab -->
+<div id="tab-dailyreport" class="tab-content">
+    <div class="card" style="display:flex;justify-content:space-between;align-items:center; padding:11px 14px;">
+        <div style="font-weight:900;color:var(--primary);font-size:14px">WAGEH │ Menoufia</div>
+        <div style="display:flex;gap:6px">
+            <button class="btn-sm btn-gray" style="border-radius:10px; font-size:10px; padding:5px 9px; cursor:pointer; font-weight:800;" onclick="clearTodayCustomers()" data-i18n="rep_clear_today">تفريغ اليوم</button>
+            <button class="btn-sm btn-danger" style="border-radius:10px; font-size:10px; padding:5px 10px; border:none; color:#fff; cursor:pointer; font-weight:800;" onclick="manualResetMonth()" data-i18n="rep_reset">تصفير</button>
+            <button class="btn-sm" style="background:var(--surface-soft);color:var(--primary);border:1px solid var(--border);border-radius:10px; font-size:11px; padding:4px 9px; cursor:pointer;" onclick="toggleSettings()">⚙️</button>
+        </div>
+    </div>
+    <div class="settings-area" id="settingsArea">
+        <h4 data-i18n="rep_start_month">بداية الشهر (يفضل تركها 0)</h4>
+        <div class="row"><input type="number" id="startCount" placeholder="عدد العقود القديمة" data-i18n-placeholder="rep_old_contracts" oninput="saveSettings()" style="margin-bottom:0"><input type="number" id="startLimit" placeholder="توتال الليميت (K)" data-i18n-placeholder="rep_old_limit" oninput="saveSettings()" style="margin-bottom:0"></div>
+    </div>
+    <div class="row">
+        <input type="date" id="reportDate" style="margin-bottom:0" onchange="onReportDateChange()">
+        <button class="btn btn-gray" style="width:auto;padding:0 12px;margin-bottom:0;font-size:11px;" onclick="copyReport()" data-i18n="rep_copy">Copy</button>
+        <button class="btn btn-gray" style="width:auto;padding:0 12px;margin-bottom:0;font-size:11px;" onclick="copySummaryText()" data-i18n="rep_summary_btn">ملخص</button>
+    </div>
+    <div class="grid" style="margin-top:10px">
+        <div class="card" style="margin-bottom:0;padding:11px;background:var(--surface-soft)"><div class="stat-title" data-i18n="rep_activated" style="font-size:10px;">Activated (Today)</div><div class="stat-value" id="dailyCount" style="font-size:16px;">00</div></div>
+        <div class="card" style="margin-bottom:0;padding:11px;background:var(--surface-soft)"><div class="stat-title" data-i18n="rep_limits" style="font-size:10px;">Limits (Today)</div><div class="stat-value" id="dailyLimits" style="font-size:16px;">0K</div></div>
+        <div class="card" style="margin-bottom:0;padding:11px;background:var(--surface-soft)"><div class="stat-title" data-i18n="rep_total" style="font-size:10px;">Total Monthly</div><div class="stat-value highlight" id="monthlyCount" style="font-size:16px;">00</div><div id="monthlyCountBreakdown" style="font-size:8px;color:var(--text-muted);margin-top:2px;direction:ltr"></div></div>
+        <div class="card" style="margin-bottom:0;padding:11px;background:var(--surface-soft)"><div class="stat-title" data-i18n="rep_limit_m" style="font-size:10px;">Monthly Limit</div><div class="stat-value highlight" id="monthlyLimits" style="font-size:16px;">0K</div></div>
+    </div>
+    <div class="card">
+        <button class="btn btn-purple" onclick="smartPasteNameCode()" style="margin-bottom: 10px; font-size:11px;" data-i18n="rep_paste">📋 لصق الاسم والكود من واتساب</button>
+        <input type="text" id="custName" placeholder="Client name" data-i18n-placeholder="rep_cust_name">
+        <div class="row"><input type="text" id="custID" placeholder="Account No / Code" data-i18n-placeholder="rep_cust_code"><input type="number" id="custLimit" placeholder="Limit (K)" data-i18n-placeholder="rep_cust_limit"></div>
+        <div class="row"><input type="text" id="custNID" placeholder="NID" data-i18n-placeholder="rep_cust_nid"><input type="text" id="custLocation" placeholder="Location" value="Menoufia" data-i18n-placeholder="rep_cust_loc"></div>
+        <button class="btn" onclick="addCustomer()" data-i18n="rep_add_btn">+ Add Customer</button>
+    </div>
+    <div class="card">
+        <h3 style="margin-bottom:8px;font-size:12px;color:var(--text-muted);font-weight:800" data-i18n="rep_appr_rej">Approved & Rejected (Manual)</h3>
+        <div class="row"><input type="number" id="appCount" placeholder="Appr. Count" data-i18n-placeholder="rep_appr_c" oninput="saveReportInputs();updateUI()"><input type="number" id="appLimit" placeholder="Appr. Limit (K)" data-i18n-placeholder="rep_appr_l" oninput="saveReportInputs();updateUI()"></div>
+        <input type="number" id="rejCount" placeholder="Rejected Count" data-i18n-placeholder="rep_rej_c" oninput="saveReportInputs();updateUI()">
+    </div>
+    <div class="report-box" id="reportText"></div>
+    <div class="save-row">
+        <button class="btn btn-save" onclick="saveSection('reportText','التقرير_اليومي','img')" data-i18n="save_img">📸 صورة</button>
+        <button class="btn btn-note" onclick="saveSection('reportText','التقرير_اليومي','txt')" data-i18n="save_txt">📝 نوت</button>
+        <button class="btn btn-pdf" onclick="saveSection('reportText','التقرير_اليومي','pdf')" data-i18n="save_pdf">📄 PDF</button>
+    </div>
+    <button class="btn btn-wa" onclick="shareWhatsApp()" style="margin-top:5px" data-i18n="rep_share_wa">Share WhatsApp</button>
+    
+    <div class="daily-log-section">
+        <h3 style="margin-top:16px; margin-bottom:4px; font-size:14px; display:flex; justify-content:space-between;"><span data-i18n="rep_delta_title">📊 Delta Sales Sheet</span><span id="logCount" style="font-size:10px;color:var(--text-muted);font-weight:700">0</span></h3>
+        <p class="log-agent-line" style="font-size:10px; color:var(--text-muted); font-weight:700; margin-bottom:10px;" data-i18n="rep_agent_line">Agent: Mohamed Wageh — Auto-saved daily</p>
+        
+        <input type="text" id="logSearchInput" placeholder="🔍 ابحث عن عميل في السجلات..." data-i18n-placeholder="rep_log_search_ph" oninput="renderDailyLog()" style="margin-bottom:10px; font-size:12px;">
+        
+        <div id="dailyLogSaveArea"><div id="dailyLogList"></div></div>
+        <button class="btn btn-excel" onclick="exportMonthToExcel()" style="margin-top:12px;font-size:13px;padding:10px" data-i18n="rep_excel_btn">📥 تحميل شيت الإكسيل (الشهر كامل)</button>
+        <div class="save-row">
+            <button class="btn btn-save" onclick="saveSection('dailyLogSaveArea','السجل_اليومي','img')" data-i18n="save_img">📸 صورة</button>
+            <button class="btn btn-note" onclick="saveSection('dailyLogSaveArea','السجل_اليومي','txt')" data-i18n="save_txt">📝 نوت</button>
+            <button class="btn btn-pdf" onclick="saveSection('dailyLogSaveArea','السجل_اليومي','pdf')" data-i18n="save_pdf">📄 PDF</button>
+        </div>
+        <button class="btn btn-wa" style="margin-top:5px" onclick="shareDailyLogWA()" data-i18n="rep_share_log">📲 إرسال السجل (واتساب)</button>
+    </div>
+</div>
+
+<!-- Contracts Tab -->
+<div id="tab-contracts" class="tab-content">
+    <div class="card">
+        <h3 data-i18n="con_email_title">إنشاء إيميل (Outlook) 📧</h3>
+        <label data-i18n="con_date">تاريخ التسليم</label><input type="date" id="emailDate" onchange="updateEmailPreview()">
+        <div class="email-composer" id="contractsEmailSaveArea">
+            <div class="email-composer-header"><span data-i18n="con_email_draft">📧 مسودة الإيميل</span></div>
+            <div class="email-composer-field"><span>Subject:</span><br><strong id="previewSubject" style="font-size:12px;">...</strong></div>
+            <div class="email-composer-body" id="previewBody" style="white-space:pre-wrap; font-size:11px;">Dears,...</div>
+        </div>
+        <div class="save-row">
+            <button class="btn btn-save" onclick="saveSection('contractsEmailSaveArea','مسودة_الايميل','img')" data-i18n="save_img">📸 صورة</button>
+            <button class="btn btn-note" onclick="saveSection('contractsEmailSaveArea','مسودة_الايميل','txt')" data-i18n="save_txt">📝 نوت</button>
+            <button class="btn btn-pdf" onclick="saveSection('contractsEmailSaveArea','مسودة_الايميل','pdf')" data-i18n="save_pdf">📄 PDF</button>
+        </div>
+        <button class="btn btn-email" onclick="shareToOutlookWithFiles()" style="margin-top:5px" data-i18n="con_email_share">📤 مشاركة الإيميل وإرسال</button>
+        <button class="btn btn-gray" onclick="copyEmailText()" style="margin-top:5px;font-size:11px" data-i18n="con_email_copy">📋 نسخ الإيميل</button>
+    </div>
+    <div class="card">
+        <h3 data-i18n="con_log_title">سجل تسليمات العقود 📄</h3>
+        <div id="contractsSaveArea">
+            <div id="contractsStatusSummary" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;font-size:10px;font-weight:800;"></div>
+            <div id="contractsList"></div>
+            <div id="contractsTotalBox" style="text-align:center;margin-top:10px;padding:11px;background:var(--surface-soft);border-radius:14px;font-weight:900;border:1px dashed var(--primary); font-size:13px;"></div>
+        </div>
+        <div class="save-row">
+            <button class="btn btn-save" onclick="saveSection('contractsSaveArea','سجل_العقود','img')" data-i18n="save_img">📸 صورة</button>
+            <button class="btn btn-note" onclick="saveSection('contractsSaveArea','سجل_العقود','txt')" data-i18n="save_txt">📝 نوت</button>
+            <button class="btn btn-pdf" onclick="saveSection('contractsSaveArea','سجل_العقود','pdf')" data-i18n="save_pdf">📄 PDF</button>
+        </div>
+        <button class="btn btn-wa" style="margin-top:5px" onclick="shareContractsWA()" data-i18n="con_log_share">📲 إرسال السجل (واتساب)</button>
+    </div>
+    <div class="card">
+        <h3 style="color:var(--gold)" data-i18n="con_add_title">إضافة تسليمة جديدة 📄</h3>
+        <div class="row"><div style="flex:1"><label data-i18n="con_count">عدد العقود</label><input type="number" id="contractCount" placeholder="3" data-i18n-placeholder="con_count"></div><div style="flex:1"><label data-i18n="con_date">تاريخ التسليم</label><input type="date" id="contractDate"></div></div>
+        <label data-i18n="con_waybill">رقم البوليصة</label><input type="text" id="contractWaybill" placeholder="رقم الأرسالية" data-i18n-placeholder="con_waybill_ph">
+        <label data-i18n="con_receiver">جهة الاستلام</label><input type="text" id="contractReceiver" placeholder="أرامكس" data-i18n-placeholder="con_receiver_ph">
+        <label data-i18n="con_status">الحالة</label>
+        <select id="contractStatus"><option value="in-transit" data-i18n="con_st_trans">🚚 في الطريق</option><option value="delivered" data-i18n="con_st_deliv">✅ تم التسليم</option><option value="returned" data-i18n="con_st_ret">↩️ مرتجع</option></select>
+        <label data-i18n="con_note">ملاحظة</label><input type="text" id="contractNote" placeholder="اختياري" data-i18n-placeholder="con_note_ph">
+        <button class="btn btn-warning" onclick="addContract()" data-i18n="con_add_btn">+ تسجيل وحفظ التسليمة</button>
+    </div>
+</div>
+
+<!-- Office & Emails Combined Tab -->
+<div id="tab-office" class="tab-content">
+    <div class="card">
+        <h3 data-i18n="off_word_title">مستند وورد (Word) 📝</h3>
+        <div class="row"><label class="file-upload-box" style="border-color:var(--primary);flex:1; border:1.5px dashed var(--primary); border-radius:12px; text-align:center; padding:8px; cursor:pointer; background:var(--surface-soft);"><input type="file" id="wordFileInput" accept=".docx,.txt" style="display:none"><p style="color:var(--primary); margin:0; font-size:12px; font-weight:800;" data-i18n="off_import">📂 استيراد</p></label><button class="btn btn-gray" onclick="downloadWord()" style="flex:1;margin-bottom:0; font-size:12px;" data-i18n="off_save_word">📥 حفظ كـ Word</button></div>
+        <div class="editor-toolbar" style="margin-top:8px; display:flex; gap:6px;"><button onclick="document.execCommand('bold',false,null)" style="width:34px; height:34px; border-radius:10px; border:1px solid var(--border); background:var(--surface-soft); color:var(--text); cursor:pointer;"><b>B</b></button><button onclick="document.execCommand('italic',false,null)" style="width:34px; height:34px; border-radius:10px; border:1px solid var(--border); background:var(--surface-soft); color:var(--text); cursor:pointer;"><i>I</i></button><button onclick="document.execCommand('underline',false,null)" style="width:34px; height:34px; border-radius:10px; border:1px solid var(--border); background:var(--surface-soft); color:var(--text); cursor:pointer;"><u>U</u></button></div>
+        <div id="wordEditor" contenteditable="true" class="doc-editor" oninput="saveOfficeDrafts()" data-i18n-placeholder="off_word_ph" placeholder="اكتب هنا..." style="background:var(--surface-soft); padding:11px; border-radius:12px; margin-top:8px; min-height:110px; color:var(--text); border:1.5px solid var(--border); font-size:12px;"></div>
+        <div class="save-row">
+            <button class="btn btn-save" onclick="saveSection('wordEditor','مستند_وورد','img')" data-i18n="save_img">📸 صورة</button>
+            <button class="btn btn-note" onclick="saveSection('wordEditor','مستند_وورد','txt')" data-i18n="save_txt">📝 نوت</button>
+            <button class="btn btn-pdf" onclick="saveSection('wordEditor','مستند_وورد','pdf')" data-i18n="save_pdf">📄 PDF</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 data-i18n="off_excel_title">جدول بيانات (Excel) 📊</h3>
+        <div class="row"><label class="file-upload-box" style="border-color:var(--excel-green);flex:1; border:1.5px dashed var(--excel-green); border-radius:12px; text-align:center; padding:8px; cursor:pointer; background:var(--surface-soft);"><input type="file" id="excelFileInput" accept=".xlsx,.xls,.csv" style="display:none"><p style="color:var(--excel-green); margin:0; font-size:12px; font-weight:800;" data-i18n="off_import">📂 استيراد</p></label><button class="btn btn-excel" onclick="downloadExcel()" style="flex:1;margin-bottom:0; font-size:12px;" data-i18n="off_save_excel">📥 حفظ كـ Excel</button></div>
+        <div id="excelEditorContainer" class="excel-container" oninput="saveOfficeDrafts()" style="margin-top:10px; overflow-x:auto;"></div>
+        <div class="row" style="margin-top:8px">
+            <button class="btn btn-gray btn-sm" onclick="addExcelRow();saveOfficeDrafts();" style="flex:1;font-size:10px;margin-bottom:0;" data-i18n="off_add_row">+ صف</button>
+            <button class="btn btn-gray btn-sm" onclick="addExcelCol();saveOfficeDrafts();" style="flex:1;font-size:10px;margin-bottom:0;" data-i18n="off_add_col">+ عمود</button>
+            <button class="btn btn-gray btn-sm" onclick="sumExcelColumn()" style="flex:1.4;font-size:10px;margin-bottom:0;" data-i18n="off_sum_col">∑ جمع عمود</button>
+        </div>
+        <div class="save-row">
+            <button class="btn btn-save" onclick="saveSection('excelEditorContainer','جدول_اكسيل','img')" data-i18n="save_img">📸 صورة</button>
+            <button class="btn btn-note" onclick="saveSection('excelEditorContainer','جدول_اكسيل','txt')" data-i18n="save_txt">📝 نوت</button>
+            <button class="btn btn-pdf" onclick="saveSection('excelEditorContainer','جدول_اكسيل','pdf')" data-i18n="save_pdf">📄 PDF</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 data-i18n="off_email_tpl_title">صيغ إيميلات جاهزة 📧</h3>
+        <label data-i18n="off_sender_name">اسمك</label><input type="text" id="senderName" placeholder="Mohamed Wageh" oninput="refreshEmailTemplate()">
+        <label data-i18n="off_email_to">إيميل المستلم الافتراضي (يُحفظ تلقائياً)</label><input type="email" id="emailTo" placeholder="example@domain.com" oninput="localStorage.setItem('fixedEmailTo', this.value)">
+        <label data-i18n="off_email_type">نوع الإيميل</label>
+        <select id="emailTemplateType" onchange="loadEmailTemplate()"><option value="leave_request" data-i18n="tpl_leave">طلب إجازة</option><option value="transfer_request" data-i18n="tpl_transfer">طلب نقل</option><option value="cash_advance" data-i18n="tpl_advance">طلب سلفة</option><option value="resignation" data-i18n="tpl_resign">استقالة</option><option value="follow_up" data-i18n="tpl_followup">متابعة طلب</option><option value="work_report" data-i18n="tpl_report">تقرير عمل</option></select>
+        <label data-i18n="off_email_lang">اللغة</label>
+        <select id="emailLang" onchange="loadEmailTemplate()"><option value="ar">عربي</option><option value="en">English</option></select>
+        <div id="contextFields" style="display:none">
+            <div id="leaveTypeField" style="display:none;background:var(--surface-soft);padding:11px;border-radius:14px;margin-bottom:10px;border:1px dashed var(--primary)">
+                <label style="color:var(--primary);font-weight:900;margin-bottom:6px; font-size:12px;" data-i18n="leave_details_lbl">📋 تفاصيل الإجازة</label>
+                <select id="leaveTypeSelect" onchange="refreshEmailTemplate()"><option value="Leave" data-i18n="leave_opt_normal">إجازة</option><option value="Annual" data-i18n="leave_opt_annual">سنوية</option><option value="Sick" data-i18n="leave_opt_sick">مرضية</option></select>
+                <div class="row" style="margin-top:4px"><div style="flex:1"><label data-i18n="leave_from">من</label><input type="date" id="leaveFromDate" onchange="refreshEmailTemplate()" style="margin-bottom:0"></div><div style="flex:1"><label data-i18n="leave_to">إلى</label><input type="date" id="leaveToDate" onchange="refreshEmailTemplate()" style="margin-bottom:0"></div></div>
+            </div>
+            <div id="extraEmailFields" style="display:none;background:var(--surface-soft);padding:11px;border-radius:14px;margin-bottom:10px;border:1px dashed var(--gold)">
+                <label style="color:var(--gold);font-weight:900;margin-bottom:6px; font-size:12px;" data-i18n="extra_details_lbl">✍️ تفاصيل سريعة للقالب</label>
+                <input type="text" id="emailExtra1" placeholder="المكان الحالي / المبلغ / اسم العميل / التاريخ" data-i18n-placeholder="extra1_ph" oninput="refreshEmailTemplate()" style="margin-bottom:6px;">
+                <input type="text" id="emailExtra2" placeholder="المكان الجديد / ملاحظات إضافية (اختياري)" data-i18n-placeholder="extra2_ph" oninput="refreshEmailTemplate()" style="margin-bottom:0;">
+            </div>
+        </div>
+        <label data-i18n="email_subj_lbl">الموضوع</label><input type="text" id="emailSubject" placeholder="Subject...">
+        <label data-i18n="email_body_lbl">المحتوى</label><textarea id="emailBody" rows="4" placeholder="Email content..."></textarea>
+        <button class="btn btn-email" onclick="sendPreparedEmail()" data-i18n="email_send_btn">✉️ إرسال الإيميل</button>
+    </div>
+</div>
+
+<!-- Tasks, Notes & Team Combined Tab -->
+<div id="tab-tasks" class="tab-content">
+    <div class="card">
+        <h3 data-i18n="tasks_title">المهام والملاحظات السريعة ✅</h3>
+        <div id="tasksSaveArea">
+            <div id="tasksList"></div>
+        </div>
+        <div class="save-row">
+            <button class="btn btn-save" onclick="saveSection('tasksSaveArea','المهام_والملاحظات','img')" data-i18n="save_img">📸 صورة</button>
+            <button class="btn btn-note" onclick="saveSection('tasksSaveArea','المهام_والملاحظات','txt')" data-i18n="save_txt">📝 نوت</button>
+            <button class="btn btn-pdf" onclick="saveSection('tasksSaveArea','المهام_والملاحظات','pdf')" data-i18n="save_pdf">📄 PDF</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 data-i18n="tasks_add_title">إضافة مهمة أو ملاحظة جديدة ➕</h3>
+        <input type="text" id="taskTitleInput" placeholder="مثال: مراجعة بوليصة أرامكس أو إرسال شيت اليوم" data-i18n-placeholder="tasks_title_ph">
+        <div class="row">
+            <select id="taskCategoryInput" style="flex:1;margin-bottom:0;">
+                <option value="مهمة" data-i18n="task_cat_task">📌 مهمة</option>
+                <option value="ملاحظة" data-i18n="task_cat_note">🗒️ ملاحظة</option>
+                <option value="عاجل" data-i18n="task_cat_urgent">⚡ عاجل</option>
+            </select>
+            <input type="date" id="taskDueInput" style="flex:1;margin-bottom:0;">
+        </div>
+        <button class="btn" onclick="addTaskItem()" style="margin-top:4px;" data-i18n="tasks_add_btn">+ إضافة للقائمة</button>
+    </div>
+
+    <div class="card">
+        <h3 data-i18n="sched_title">WEEKLY OFF SCHEDULE 📅</h3>
+        <div id="scheduleTableContainer" class="table-container">
+            <table class="data-table"><thead><tr><th colspan="3" class="table-title-top" data-i18n="sched_title">WEEKLY OFF SCHEDULE</th></tr><tr><th data-i18n="sched_emp">Employee Name</th><th data-i18n="sched_day">Day Off</th><th style="width:40px" class="no-print">✖</th></tr></thead><tbody id="teamTableBody"></tbody><tfoot><tr class="total-row"><td colspan="2" style="text-align:right;padding-right:20px" data-i18n="sched_total">Total Team Members</td><td id="totalTeamCount">0</td></tr></tfoot></table>
+        </div>
+        <div id="offDaysSummary" class="off-summary-chips"></div>
+        <div class="save-row">
+            <button class="btn btn-save" onclick="saveSection('scheduleTableContainer','جدول_الفريق','img')" data-i18n="save_img">📸 صورة</button>
+            <button class="btn btn-note" onclick="saveSection('scheduleTableContainer','جدول_الفريق','txt')" data-i18n="save_txt">📝 نوت</button>
+            <button class="btn btn-pdf" onclick="saveSection('scheduleTableContainer','جدول_الفريق','pdf')" data-i18n="save_pdf">📄 PDF</button>
+        </div>
+        <button class="btn btn-wa" style="margin-top:5px" onclick="shareScheduleAsImage()" data-i18n="sched_share">📲 إرسال الجدول</button>
+
+        <hr style="border:none;border-top:1px dashed var(--border);margin:14px 0;">
+        <h3 style="font-size:13px;" data-i18n="team_add_title">إضافة عضو للفريق 👥</h3>
+        <input type="text" id="teamName" placeholder="اسم المندوب" data-i18n-placeholder="team_name_ph">
+        <label data-i18n="sched_day">يوم الإجازة</label>
+        <select id="teamOffDay"><option value="Saturday" data-i18n="day_sat">السبت</option><option value="Sunday" data-i18n="day_sun">الأحد</option><option value="Monday" data-i18n="day_mon">الإثنين</option><option value="Tuesday" data-i18n="day_tue">الثلاثاء</option><option value="Wednesday" data-i18n="day_wed">الأربعاء</option><option value="Thursday" data-i18n="day_thu">الخميس</option><option value="Friday" data-i18n="day_fri">الجمعة</option><option value="None" data-i18n="day_none">لا يوجد</option></select>
+        <button class="btn" onclick="addTeamMember()" data-i18n="team_add_btn">+ إضافة للفريق</button>
+    </div>
+
+    <div class="card">
+        <h3 data-i18n="sales_rep_title">تقرير السيلز اليومي 📊</h3>
+        <div id="salesReportTableContainer" class="table-container" style="margin-top:10px">
+            <table class="data-table excel-table"><thead><tr><th colspan="4" class="table-title-top" data-i18n="sales_rep_top">DAILY SALES REPORT</th></tr><tr><th data-i18n="sales_col_name">Sales Name</th><th data-i18n="sales_col_clients">Clients</th><th data-i18n="sales_col_limit">Limit (K)</th><th style="width:40px" class="no-print">✖</th></tr></thead><tbody id="dailyReportBody"></tbody><tfoot><tr class="total-row"><td style="text-align:right;padding-right:10px" data-i18n="sales_total">Total</td><td id="totalClientsCount">0</td><td id="totalLimitAmount">0</td><td class="no-print"></td></tr></tfoot></table>
+        </div>
+        <div class="save-row">
+            <button class="btn btn-save" onclick="saveSection('salesReportTableContainer','تقرير_السيلز','img')" data-i18n="save_img">📸 صورة</button>
+            <button class="btn btn-note" onclick="saveSection('salesReportTableContainer','تقرير_السيلز','txt')" data-i18n="save_txt">📝 نوت</button>
+            <button class="btn btn-pdf" onclick="saveSection('salesReportTableContainer','تقرير_السيلز','pdf')" data-i18n="save_pdf">📄 PDF</button>
+        </div>
+        <div class="row" style="margin-top:5px;">
+            <button class="btn btn-excel" onclick="shareSalesReportExcel()" style="flex:1;margin-bottom:0;" data-i18n="sales_export_excel">📊 تصدير كإكسيل</button>
+            <button class="btn btn-gray" onclick="copySalesReportText()" style="flex:1;margin-bottom:0;font-size:11px;" data-i18n="sales_copy">📋 نسخ التقرير</button>
+        </div>
+
+        <hr style="border:none;border-top:1px dashed var(--border);margin:14px 0;">
+        <h3 style="font-size:13px;" data-i18n="sales_add_title">إضافة تقرير سيلز 📊</h3>
+        <input type="text" id="reportName" placeholder="اسم السيلز" data-i18n-placeholder="sales_name_ph">
+        <div class="row"><input type="number" id="reportClients" placeholder="عدد العملاء" data-i18n-placeholder="sales_clients_ph"><input type="number" id="reportLimit" placeholder="الليميت (K)" data-i18n-placeholder="sales_limit_ph"></div>
+        <button class="btn" onclick="addReport()" data-i18n="sales_add_btn">+ إضافة للتقرير</button>
+    </div>
+</div>
+
+<!-- Universal Colloquial Translator Tab -->
+<div id="tab-translate" class="tab-content">
+    <div class="card">
+        <h3 data-i18n="tr_tab_title">مترجم كل اللغات بالعامية 🌐</h3>
+        <p style="font-size:11px;color:var(--text-muted);margin-top:-4px;margin-bottom:10px;font-weight:700;" data-i18n="tr_tab_desc">يترجم أي لغة لأي لغة، ويطلع المعنى بالعامية البسيطة من غير تعقيد ولا ترجمة حرفية.</p>
+        <div class="row">
+            <div style="flex:1;">
+                <label data-i18n="tr_from">من لغة</label>
+                <select id="tabTransSource" style="margin-bottom:0;" onchange="scheduleTabTranslation()">
+                    <option value="auto" data-i18n="tr_auto">تلقائي (أي لغة)</option>
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="es">Español</option>
+                    <option value="it">Italiano</option>
+                    <option value="tr">Türkçe</option>
+                </select>
+            </div>
+            <div style="flex:1;">
+                <label data-i18n="tr_to">إلى لغة</label>
+                <select id="tabTransTarget" style="margin-bottom:0;" onchange="scheduleTabTranslation()">
+                    <option value="ar" data-i18n="tr_target_ar">العربية (عامي واضح)</option>
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="es">Español</option>
+                    <option value="it">Italiano</option>
+                    <option value="tr">Türkçe</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:6px;">
+            <button class="btn btn-sm btn-purple" id="tabVoiceBtn" onclick="toggleTabVoiceInput()" style="flex:1;margin-bottom:0;" data-i18n="tr_voice">🎤 إملاء صوتي</button>
+            <label class="btn btn-sm btn-gray" style="flex:1;margin-bottom:0;cursor:pointer;">
+                <span data-i18n="tr_audio">🎵 ملف صوتي / واتساب</span>
+                <input type="file" id="tabAudioFileInput" accept="audio/*,.ogg,.mp3,.wav,.m4a,.aac,.webm" style="display:none" onchange="handleTabAudioUpload(event)">
+            </label>
+            <button class="btn btn-sm btn-gray" onclick="clearTabTranslator()" style="margin-bottom:0;">🧹</button>
+        </div>
+
+        <textarea id="tabTransInput" rows="4" placeholder="اكتب أو الصق أي رسالة أو إيميل أو نص بأي لغة هنا..." data-i18n-placeholder="tr_input_ph" oninput="scheduleTabTranslation()" style="margin-top:8px;"></textarea>
+        <button class="btn" onclick="runTabTranslation()" data-i18n="tr_run_btn">🔄 ترجمة بالعامية دلوقتي</button>
+
+        <div id="tabTransSummary" class="translator-smart-note" data-i18n="tr_summary_init">💡 هقولك هنا الخلاصة ونوع الكلام بسرعة.</div>
+        <label data-i18n="tr_out_lbl">الترجمة:</label>
+        <div id="tabTransOutput" class="translator-out" data-i18n="tr_out_ph">الترجمة هتظهر هنا...</div>
+
+        <div class="row" style="margin-bottom:0;">
+            <button class="btn btn-sm btn-save" onclick="speakTabTranslation()" style="flex:1;margin-bottom:0;" data-i18n="tr_speak">🔊 نطق</button>
+            <button class="btn btn-sm btn-gray" onclick="copyTabTranslation()" style="flex:1;margin-bottom:0;" data-i18n="tr_copy">📋 نسخ</button>
+            <button class="btn btn-sm btn-purple" onclick="sendTabTranslationToTasks()" style="flex:1;margin-bottom:0;" data-i18n="tr_to_tasks">✅ للمهام</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 data-i18n="tr_history_title">آخر الترجمات 🕘</h3>
+        <div id="translationHistoryList"></div>
+    </div>
+</div>
+
+<!-- Archive Tab (Last Item) -->
+<div id="tab-archive" class="tab-content">
+    <div class="card">
+        <h3 data-i18n="arch_title">📸 الأرشيف الذكي</h3>
+        <div class="row" style="margin-bottom:10px"><button class="btn btn-sm btn-excel" onclick="exportBackup()" style="flex:1;padding:8px;margin-bottom:0;font-size:10px;" data-i18n="arch_backup">📤 نسخة احتياطية</button><label class="btn btn-sm btn-save" style="flex:1;padding:8px;margin-bottom:0;cursor:pointer;font-size:10px;"><span data-i18n="arch_restore">📥 استعادة</span><input type="file" id="importBackupInput" accept=".json" onchange="importBackup(event)" style="display:none"></label></div>
+        <div class="row" style="margin-top:8px"><input type="text" id="archiveSearchInput" placeholder="🔍 ابحث بالاسم أو التاريخ..." data-i18n-placeholder="arch_search_ph" oninput="loadArchive()" style="margin-bottom:0; font-size:11px;"></div>
+        <div class="row">
+            <select id="archiveFilterSelect" onchange="loadArchive()" style="margin-bottom:0; font-size:11px;"><option value="all" data-i18n="arch_all">📁 كل المجلدات</option><option value="حساب_العمولة" data-i18n="nav_calc">🧮 حاسبة</option><option value="قائمة_العملاء" data-i18n="nav_crm">👥 عملاء</option><option value="التقرير_اليومي" data-i18n="nav_report">📑 ريبورت</option><option value="السجل_اليومي" data-i18n="arch_daily_log">📊 السجل اليومي</option><option value="سجل_العقود" data-i18n="nav_contracts">📄 عقود</option><option value="مستند_وورد" data-i18n="nav_office">📝 أوفيس</option><option value="المهام_والملاحظات" data-i18n="nav_tasks">✅ مهام</option><option value="__TRASH__" data-i18n="arch_trash">🗑️ سلة المحذوفات</option></select>
+            <select id="autoDeleteSelect" onchange="saveAutoDeleteSetting()" style="margin-bottom:0;color:var(--gold); font-size:11px;"><option value="0" data-i18n="arch_del_never">🚫 بدون حذف</option><option value="7" data-i18n="arch_del_7">🗑️ بعد 7 أيام</option><option value="30" data-i18n="arch_del_30">🗑️ بعد 30 يوم</option><option value="90" data-i18n="arch_del_90">🗑️ بعد 3 شهور</option></select>
+        </div>
+        <button class="btn" onclick="loadArchive()" style="margin-top:8px; font-size:12px;" data-i18n="arch_refresh">🔄 تحديث</button>
+        <div id="archiveList" style="margin-top:10px"></div>
+    </div>
+</div>
+</div>
+
+<!-- Bottom Navigation Panel (Archive Last) -->
+<div class="bottom-nav" id="mainNav">
+    <div class="nav-item active" onclick="switchTab('tab-dashboard',this)"><span class="nav-icon">🏠</span><span class="nav-text" data-i18n="nav_home">رئيسية</span></div>
+    <div class="nav-item" onclick="switchTab('tab-calc',this)"><span class="nav-icon">🧮</span><span class="nav-text" data-i18n="nav_calc">حاسبة</span></div>
+    <div class="nav-item" onclick="switchTab('tab-crm',this)"><span class="nav-icon">👥</span><span class="nav-text" data-i18n="nav_crm">عملاء</span><span class="nav-badge" id="crmBadge" style="display:none">0</span></div>
+    <div class="nav-item" onclick="switchTab('tab-dailyreport',this)"><span class="nav-icon">📑</span><span class="nav-text" data-i18n="nav_report">ريبورت</span></div>
+    <div class="nav-item" onclick="switchTab('tab-contracts',this)"><span class="nav-icon">📄</span><span class="nav-text" data-i18n="nav_contracts">عقود</span></div>
+    <div class="nav-item" onclick="switchTab('tab-office',this)"><span class="nav-icon">📝</span><span class="nav-text" data-i18n="nav_office">أوفيس</span></div>
+    <div class="nav-item" onclick="switchTab('tab-tasks',this)"><span class="nav-icon">✅</span><span class="nav-text" data-i18n="nav_tasks">مهام</span></div>
+    <div class="nav-item" onclick="switchTab('tab-translate',this)"><span class="nav-icon">🌐</span><span class="nav-text" data-i18n="nav_translate">ترجمة</span></div>
+    <div class="nav-item" onclick="switchTab('tab-archive',this)"><span class="nav-icon">📸</span><span class="nav-text" data-i18n="nav_archive">أرشيف</span></div>
+</div>
+
+<!-- Selection Translate Floating Button -->
+<button class="selection-translate-btn" id="selectionTranslateBtn" onclick="translateSelectedText()" data-i18n="tr_selected">🌐 ترجمة المحدد</button>
+
+<!-- Floating Translator Button -->
+<button class="translate-fab" id="translateFab" onclick="openUniversalTranslator()" title="Translator">🌐</button>
+
+<!-- Quick Action FAB & Panel Menu -->
+<button class="quick-fab" id="quickFab" onclick="toggleQuickMenu()" title="Quick Actions">⚡</button>
+<div class="quick-menu hidden" id="quickMenu">
+    <button onclick="toggleQuickMenu(); switchTab('tab-dailyreport', document.querySelector('.nav-item:nth-child(4)'));"><span>📝</span> <span data-i18n="fab_add">إضافة عميل سريع</span></button>
+    <button onclick="toggleQuickMenu(); openUniversalTranslator();"><span>🌐</span> <span data-i18n="fab_trans">مترجم سريع</span></button>
+    <button onclick="toggleQuickMenu(); switchTab('tab-tasks', document.querySelector('.nav-item:nth-child(7)'));"><span>✅</span> <span data-i18n="fab_tasks">مهامي السريعة</span></button>
+    <button onclick="toggleQuickMenu(); switchTab('tab-calc', document.querySelector('.nav-item:nth-child(2)'));"><span>🧮</span> <span data-i18n="fab_calc">حاسبة سريعة</span></button>
+</div>
+
+<!-- Universal Translator Quick Modal -->
+<div class="translator-modal-backdrop" id="universalTranslatorModal" onclick="if(event.target===this)closeUniversalTranslator()">
+    <div class="translator-modal">
+        <div class="translator-header">
+            <h3 data-i18n="modal_tr_title">🌐 المترجم الفوري (بالعامية)</h3>
+            <button class="translator-close" onclick="closeUniversalTranslator()">✖</button>
+        </div>
+        <div class="row" style="margin-bottom:8px;">
+            <select id="translatorDir" style="flex:1;margin-bottom:0;" onchange="runUniversalTranslation()">
+                <option value="auto-ar" data-i18n="modal_dir_ar">أي لغة ⬅️ عربي عامي</option>
+                <option value="ar-en" data-i18n="modal_dir_en">عربي ⬅️ English</option>
+            </select>
+            <button class="btn btn-sm btn-gray" onclick="pasteFromClipboardToTranslator()" style="margin-bottom:0;" data-i18n="modal_paste">📋 لصق</button>
+            <button class="btn btn-sm btn-gray" onclick="clearTranslator()" style="margin-bottom:0;">🧹</button>
+        </div>
+        <textarea id="translatorInput" rows="4" placeholder="اكتب أو الصق أي نص هنا..." data-i18n-placeholder="modal_in_ph" oninput="scheduleUniversalTranslation()"></textarea>
+        <button class="btn" onclick="runUniversalTranslation()" data-i18n="modal_run">🔄 ترجمة وتصنيف فوري</button>
+        <div id="translatorSmartSummary" class="translator-smart-note" data-i18n="modal_sum_init">💡 الخلاصة والتصنيف سيظهران هنا تلقائياً عند ترجمة أي نص.</div>
+        <label data-i18n="modal_out_lbl">الناتج المترجم:</label>
+        <div id="translatorOutput" class="translator-out" data-i18n="modal_out_ph">الترجمة ستظهر هنا...</div>
+        <div class="row" style="margin-bottom:0;">
+            <button class="btn btn-sm btn-save" onclick="copyTranslatedOutput()" style="flex:1;margin-bottom:0;" data-i18n="modal_copy">📋 نسخ الترجمة</button>
+            <button class="btn btn-sm btn-purple" onclick="sendTranslationToTasks()" style="flex:1;margin-bottom:0;" data-i18n="modal_to_tasks">✅ ترحيل للمهام</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const translations = {
+    ar: {
+        app_title: "Seven world", app_subtitle: "By M.wageh",
+        welcome_sub: "إلى أين سنصل اليوم؟",
+        nav_home: "رئيسية", nav_calc: "حاسبة", nav_crm: "عملاء", nav_report: "ريبورت", nav_contracts: "عقود", nav_office: "أوفيس", nav_tasks: "مهام", nav_translate: "ترجمة", nav_archive: "أرشيف",
+        dash_target_label: "🎯 حدد التارجت الشهري هنا:", dash_contracts: "عقود الشهر", dash_limit: "ليميت الشهر", dash_followups: "متابعات", dash_total_crm: "إجمالي عملاء",
+        chart_target: "🎯 التارجت الشهري", chart_status: "📊 حالات العملاء", chart_week: "📈 آخر 7 أيام",
+        proj_title: "🔮 توقع نهاية الشهر", proj_rate: "معدلك اليومي:", proj_daily_needed: "المطلوب يومياً لباقي الشهر:", proj_end: "التوقع النهائي:", proj_compare: "المقارنة بالشهر السابق:",
+        streak_title: "🔥 Streak", streak_desc: "يوم متواصل بتحقيق", badges_title: "🏆 الإنجازات",
+        calc_title: "حاسبة العمولة 💰", calc_desc: "اكتب الأرقام اللي إنت عايز تجربها في الخانات دي، وهيا هتحسب لوحدها.", calc_target: "التارجت", calc_achieved: "المنجز", calc_sync: "🔄 سحب الأرقام الحقيقية تلقائياً", calc_limit: "الليميت المحقق (جنيه) - اكتبه يدوي",
+        calc_percent_title: "نسبة التارجت:", calc_rate: "سعر العقد:", calc_contracts_total: "إجمالي العقود:", calc_bonus: "البونص (1 مليون = 1600):", calc_tax: "الضريبة المخصومة (11%):", calc_subtotal: "الإجمالي قبل الضريبة:", calc_total: "الإجمالي بعد خصم الضريبة:",
+        manual_target_title: "احسب تارجتي مانول 🎯", manual_target_desc: "حط التارجت بتاعك يدوي واللي عملته، وهيطلعلك النسبة المئوية بس.",
+        manual_target_in: "تارجتي مانول", manual_done_in: "اللي عملته", manual_pct_lbl: "نسبة التحقيق:", manual_pull_btn: "📥 منجزي الحالي",
+        btn_clear: "🧹 تفريغ", save_img: "📸 صورة", save_txt: "📝 نوت", save_pdf: "📄 PDF",
+        crm_search_ph: "🔍 ابحث بالاسم أو الكود أو الرقم...", crm_bulk: "📲 إرسال واتساب جماعي", crm_active: "مفعّلين", crm_amount: "إجمالي المبالغ", crm_add_title: "إضافة عميل جديد 👥", crm_name_ph: "اسم العميل", crm_phone_ph: "رقم التليفون", crm_code_ph: "كود العميل / الليد", crm_amount_ph: "الليمت / مبلغ التمويل (مثال: 50000 أو 50)", crm_followup: "تاريخ المتابعة (اختياري)", crm_tags: "التاجات (اختياري)", crm_notes_ph: "ملاحظات", crm_add_btn: "+ إضافة عميل",
+        tag_vip: "⭐ VIP", tag_hot: "🔥 Hot", tag_new: "🆕 New", tag_hard: "😤 صعب", tag_easy: "😊 سهل",
+        rep_clear_today: "تفريغ اليوم", rep_reset: "تصفير", rep_start_month: "بداية الشهر (يفضل تركها 0)", rep_old_contracts: "عدد العقود القديمة", rep_old_limit: "توتال الليميت (K)", rep_copy: "Copy", rep_summary_btn: "ملخص", rep_activated: "Activated (Today)", rep_limits: "Limits (Today)", rep_total: "Total Monthly", rep_limit_m: "Monthly Limit",
+        rep_paste: "📋 لصق الاسم والكود من واتساب", rep_cust_name: "Client name", rep_cust_code: "Account No / Code", rep_cust_limit: "Limit (K)", rep_cust_nid: "NID", rep_cust_loc: "Location", rep_add_btn: "+ Add Customer", rep_appr_rej: "Approved & Rejected (Manual)", rep_appr_c: "Appr. Count", rep_appr_l: "Appr. Limit (K)", rep_rej_c: "Rejected Count", rep_share_wa: "Share WhatsApp", rep_delta_title: "📊 Delta Sales Sheet", rep_agent_line: "Agent: Mohamed Wageh — Auto-saved daily", rep_log_search_ph: "🔍 ابحث عن عميل في السجلات...", rep_excel_btn: "📥 تحميل شيت الإكسيل (الشهر كامل)", rep_share_log: "📲 إرسال السجل (واتساب)",
+        con_email_title: "إنشاء إيميل (Outlook) 📧", con_date: "تاريخ التسليم", con_email_draft: "📧 مسودة الإيميل", con_email_share: "📤 مشاركة الإيميل وإرسال", con_email_copy: "📋 نسخ الإيميل", con_log_title: "سجل تسليمات العقود 📄", con_log_share: "📲 إرسال السجل (واتساب)", con_add_title: "إضافة تسليمة جديدة 📄", con_count: "عدد العقود", con_waybill: "رقم البوليصة", con_waybill_ph: "رقم الأرسالية", con_receiver: "جهة الاستلام", con_receiver_ph: "أرامكس", con_status: "الحالة", con_st_trans: "🚚 في الطريق", con_st_deliv: "✅ تم التسليم", con_st_ret: "↩️ مرتجع", con_note: "ملاحظة", con_note_ph: "اختياري", con_add_btn: "+ تسجيل وحفظ التسليمة",
+        off_word_title: "مستند وورد (Word) 📝", off_import: "📂 استيراد", off_save_word: "📥 حفظ كـ Word", off_word_ph: "اكتب هنا...", off_excel_title: "جدول بيانات (Excel) 📊", off_save_excel: "📥 حفظ كـ Excel", off_add_row: "+ صف", off_add_col: "+ عمود", off_sum_col: "∑ جمع عمود",
+        off_email_tpl_title: "صيغ إيميلات جاهزة 📧", off_sender_name: "اسمك", off_email_to: "إيميل المستلم الافتراضي (يُحفظ تلقائياً)", off_email_type: "نوع الإيميل", off_email_lang: "اللغة",
+        tpl_leave: "طلب إجازة", tpl_transfer: "طلب نقل", tpl_advance: "طلب سلفة", tpl_resign: "استقالة", tpl_followup: "متابعة طلب", tpl_report: "تقرير عمل",
+        leave_details_lbl: "📋 تفاصيل الإجازة", leave_opt_normal: "إجازة", leave_opt_annual: "سنوية", leave_opt_sick: "مرضية", leave_from: "من", leave_to: "إلى",
+        extra_details_lbl: "✍️ تفاصيل سريعة للقالب", extra1_ph: "المكان الحالي / المبلغ / اسم العميل / التاريخ", extra2_ph: "المكان الجديد / ملاحظات إضافية (اختياري)",
+        email_subj_lbl: "الموضوع", email_body_lbl: "المحتوى", email_send_btn: "✉️ إرسال
